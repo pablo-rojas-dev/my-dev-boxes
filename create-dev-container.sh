@@ -1,12 +1,40 @@
 #!/usr/bin/env bash
 set -e
 
-STACK="$1"
+STACK="${1:-}"
+CUSTOM_CONTAINER_NAME="${2:-}"
 
 AVAILABLE_STACKS=("astro" "js-ts" "react-django" "react-express" "react-springboot" "java" "python")
 
+usage() {
+  echo "Usage: $0 {astro|js-ts|react-django|react-express|react-springboot|java|python|all} [container-name]"
+  echo
+  echo "Examples:"
+  echo "  $0 react-express"
+  echo "  $0 react-express my-api"
+  echo "  $0 python data-lab"
+  echo "  $0 all"
+  echo
+  echo "Notes:"
+  echo "  - If container-name is omitted, the default name is <stack>-dev."
+  echo "  - The all option does not accept a custom container name."
+}
+
 if [[ -z "$STACK" ]]; then
-  echo "Usage: $0 {astro|js-ts|react-django|react-express|react-springboot|java|python|all}"
+  usage
+  exit 1
+fi
+
+if [[ "$STACK" == "all" && -n "$CUSTOM_CONTAINER_NAME" ]]; then
+  echo "Error: the 'all' option does not accept a custom container name."
+  echo
+  usage
+  exit 1
+fi
+
+if [[ -n "$CUSTOM_CONTAINER_NAME" && ! "$CUSTOM_CONTAINER_NAME" =~ ^[a-zA-Z0-9][a-zA-Z0-9_.-]*$ ]]; then
+  echo "Error: invalid container name '$CUSTOM_CONTAINER_NAME'."
+  echo "Use letters, numbers, dots, underscores, or hyphens, and start with a letter or number."
   exit 1
 fi
 
@@ -22,7 +50,7 @@ COMMON_PACKAGES="git fastfetch zsh neovim gcc-c++ make curl zip unzip"
 
 create_container() {
   local STACK_NAME="$1"
-  local CONTAINER_NAME="$STACK_NAME-dev"
+  local CONTAINER_NAME="${2:-$STACK_NAME-dev}"
   local CODE_DIR="$HOME/Documents/Code/$CONTAINER_NAME"
   local PACKAGES=""
   local DISTROBOX_NETWORK_ARGS=()
@@ -74,6 +102,7 @@ create_container() {
 
     *)
       echo "Invalid stack: $STACK_NAME"
+      usage
       exit 1
       ;;
   esac
@@ -91,7 +120,7 @@ create_container() {
     fi
   fi
 
-  echo "Creating $CONTAINER_NAME container..."
+  echo "Creating $CONTAINER_NAME container with stack $STACK_NAME..."
 
   distrobox create \
     --name "$CONTAINER_NAME" \
@@ -206,6 +235,7 @@ if [[ "$STACK" == "all" ]]; then
   echo
   echo "All containers are ready."
 else
-  create_container "$STACK"
-  distrobox enter --no-workdir "$STACK-dev"
+  CONTAINER_NAME="${CUSTOM_CONTAINER_NAME:-$STACK-dev}"
+  create_container "$STACK" "$CONTAINER_NAME"
+  distrobox enter --no-workdir "$CONTAINER_NAME"
 fi
