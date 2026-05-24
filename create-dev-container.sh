@@ -51,7 +51,7 @@ COMMON_PACKAGES="git fastfetch zsh neovim gcc-c++ make curl zip unzip"
 create_container() {
   local STACK_NAME="$1"
   local CONTAINER_NAME="${2:-$STACK_NAME-dev}"
-  local CODE_DIR="$HOME/Documents/Code/$CONTAINER_NAME"
+  local CODE_DIR="$HOME/Code/$CONTAINER_NAME"
   local PACKAGES=""
   local DISTROBOX_NETWORK_ARGS=()
   local ADDITIONAL_FLAGS_ARGS=()
