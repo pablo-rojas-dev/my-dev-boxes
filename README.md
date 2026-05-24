@@ -9,7 +9,7 @@ It also includes a shared PostgreSQL service running in Podman, connected throug
 Recommended directory structure:
 
 ```text
-~/Documents/Code/
+~/Code/
 .
 ├── astro-dev
 ├── java-dev
@@ -181,6 +181,17 @@ Create all containers:
 ```bash
 ./create-dev-container.sh all
 ```
+
+Create a container with custom name:
+```bash
+# Base
+./create-dev-container.sh stack container-name
+
+# Example
+./create-dev-container.sh python data-lab
+```
+
+
 
 The backend-oriented containers are attached to the `dev-net` network so they can communicate with the PostgreSQL container.
 
