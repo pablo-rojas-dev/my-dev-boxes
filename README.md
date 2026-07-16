@@ -61,6 +61,15 @@ You should see `dev-net` in the list.
 ---
 
 ## 2. Create the PostgreSQL Service
+Define user and password:
+
+```bash
+export USER="USER"
+```
+
+```bash
+export PASSWORD="PASSWORD"
+```
 
 Create and start a PostgreSQL container connected to the `dev-net` network:
 
@@ -68,8 +77,8 @@ Create and start a PostgreSQL container connected to the `dev-net` network:
 podman run -d \
   --name postgres-dev \
   --network dev-net \
-  -e POSTGRES_USER=dev \
-  -e POSTGRES_PASSWORD=secret \
+  -e POSTGRES_USER=$USER \
+  -e POSTGRES_PASSWORD=$PASSWORD \
   -e POSTGRES_DB=postgres \
   -v postgres-dev-data:/var/lib/postgresql/data \
   -p 5432:5432 \
