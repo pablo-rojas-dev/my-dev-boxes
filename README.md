@@ -1,4 +1,6 @@
-# Development Containers with Distrobox, Podman, and PostgreSQL
+![Banner](./doc/my-dev-boxes-banner.png)
+
+# My Dev Boxes
 
 This setup provides isolated development containers for different technology stacks using **Distrobox** and **Podman**.
 
@@ -164,40 +166,40 @@ all
 Make the script executable:
 
 ```bash
-chmod +x create-dev-container.sh
+chmod +x create-dev-box.sh
 ```
 
 Create a React + Spring Boot development container:
 
 ```bash
-./create-dev-container.sh react-springboot
+./create-dev-box.sh react-springboot
 ```
 
 Create a React + Django development container:
 
 ```bash
-./create-dev-container.sh react-django
+./create-dev-box.sh react-django
 ```
 
 Create a React + Express development container:
 
 ```bash
-./create-dev-container.sh react-express
+./create-dev-box.sh react-express
 ```
 
 Create all containers:
 
 ```bash
-./create-dev-container.sh all
+./create-dev-box.sh all
 ```
 
 Create a container with custom name:
 ```bash
 # Base
-./create-dev-container.sh stack container-name
+./create-dev-box.sh stack container-name
 
 # Example
-./create-dev-container.sh python data-lab
+./create-dev-box.sh python data-lab
 ```
 
 
@@ -454,7 +456,7 @@ podman start postgres-dev
 Create or enter your development container:
 
 ```bash
-./create-dev-container.sh react-springboot
+./create-dev-box.sh react-springboot
 ```
 
 Or enter an existing one:
